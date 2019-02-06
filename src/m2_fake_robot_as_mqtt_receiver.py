@@ -7,8 +7,8 @@ import time
 
 class DelegateThatReceives(object):
 
-    def say_it(self, message):
-        print("Message received!", message)
+    def say_it(self, left_speed, right_speed):
+        print("Message received!", left_speed, right_speed)
 
 
 def main():

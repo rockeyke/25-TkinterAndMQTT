@@ -5,7 +5,7 @@ Using a fake robot as the receiver of messages.
 # DONE: 1. In mqtt_remote_method_calls, set LEGO_NUMBER at line 131
 # to YOUR robot's number.
 
-# TODO: 2. Copy your Tkinter/ttk ROBOT gui code from the previous session (m6).
+# DONE: 2. Copy your Tkinter/ttk ROBOT gui code from the previous session (m6).
 # Then modify it so that pressing a button sends a message to a teammate
 # of the form:
 #   (for Forward)
@@ -14,6 +14,7 @@ Using a fake robot as the receiver of messages.
 #
 import tkinter
 from tkinter import ttk
+import mqtt_remote_method_calls as com
 
 
 def main():
@@ -22,6 +23,11 @@ def main():
     # DONE: 2. Follow along with the video to make a remote control GUI
     # For every grid() method call you will add a row and a column argument
     # -------------------------------------------------------------------------
+    name1 = input("Enter one name (subscriber): ")
+    name2 = input("Enter another name (publisher): ")
+
+    mqtt_client = com.MqttClient()
+    mqtt_client.connect(name1, name2)
 
     root = tkinter.Tk()
     root.title("MQTT Remote")
@@ -43,8 +49,8 @@ def main():
 
     forward_button = ttk.Button(main_frame, text="Forward")
     forward_button.grid(row=2, column=1)
-    forward_button['command'] = lambda: print("Forward button")
-    root.bind('<Up>', lambda event: print("Forward key"))
+    forward_button['command'] = lambda: mqtt_client.send_message("say_it", [left_speed_entry.get(), right_speed_entry.get()])
+    root.bind('<Up>', lambda event: print("Up key"))
 
     left_button = ttk.Button(main_frame, text="Left")
     left_button.grid(row=3, column=0)
@@ -87,9 +93,9 @@ def main():
 
     root.mainloop()
 
-
 # -----------------------------------------------------------------------------
 # Calls  main  to start the ball rolling.
 # -----------------------------------------------------------------------------
 main()
+
 # Implement and test.
